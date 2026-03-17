@@ -14,4 +14,4 @@ anyhow = "1"
 spin-sdk = { version = "5.2.0", features = ["wasip3-unstable"] }
 
 [workspace]
-exclude = ["auth-middleware"]
+exclude = ["wasm-auth-middleware"]

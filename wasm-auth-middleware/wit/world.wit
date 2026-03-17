@@ -1,4 +1,4 @@
-package local:auth-middleware@0.1.0;
+package local:wasm-auth-middleware@0.1.0;
 
 world middleware {
     // 内側のハンドラに委譲するためにimport

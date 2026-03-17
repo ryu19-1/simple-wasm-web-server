@@ -8,10 +8,10 @@ version = "0.1.0"
 authors = ["Ryuki Kamikubo <ryuki.kamikubo@estie.co.jp>"]
 description = "WASIp3を試すWebアプリケーション"
 
-# auth-middleware: 公開エンドポイント（全リクエストを受ける）
+# wasm-auth-middleware: 公開エンドポイント（全リクエストを受ける）
 [[trigger.http]]
 route = "/..."
-component = "auth-middleware"
+component = "wasm-auth-middleware"
 
 # hello-p3: プライベートエンドポイント（Service Chaining経由のみ）
 [[trigger.http]]
@@ -19,12 +19,12 @@ route = { private = true }
 component = "hello-p3"
 executor = { type = "wasip3-unstable" }
 
-[component.auth-middleware]
-source = "auth-middleware/target/wasm32-wasip2/release/auth_middleware.wasm"
+[component.wasm-auth-middleware]
+source = "wasm-auth-middleware/target/wasm32-wasip2/release/wasm_auth_middleware.wasm"
 allowed_outbound_hosts = ["http://hello-p3.spin.internal"]
-[component.auth-middleware.build]
-command = "cargo build --target wasm32-wasip2 --release --manifest-path auth-middleware/Cargo.toml"
-watch = ["auth-middleware/src/**/*.rs", "auth-middleware/Cargo.toml"]
+[component.wasm-auth-middleware.build]
+command = "cargo build --target wasm32-wasip2 --release --manifest-path wasm-auth-middleware/Cargo.toml"
+watch = ["wasm-auth-middleware/src/**/*.rs", "wasm-auth-middleware/Cargo.toml"]
 
 [component.hello-p3]
 source = "target/wasm32-wasip2/release/hello_p3.wasm"

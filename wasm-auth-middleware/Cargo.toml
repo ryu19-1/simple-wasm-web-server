@@ -1,5 +1,5 @@
 [package]
-name = "auth-middleware"
+name = "wasm-auth-middleware"
 version = "0.1.0"
 edition = "2024"
 
