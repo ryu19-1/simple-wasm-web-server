@@ -1,0 +1,8 @@
+package local:auth-middleware@0.1.0;
+
+world middleware {
+    // 内側のハンドラに委譲するためにimport
+    import wasi:http/incoming-handler@0.2.8;
+    // 自分もハンドラとしてexport（ランタイムから呼ばれる）
+    export wasi:http/incoming-handler@0.2.8;
+}

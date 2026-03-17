@@ -1,0 +1,17 @@
+[package]
+name = "hello-p3"
+authors = ["Ryuki Kamikubo <ryuki.kamikubo@estie.co.jp>"]
+description = "WASIp3を試すWebアプリケーション"
+version = "0.1.0"
+rust-version = "1.94"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+anyhow = "1"
+spin-sdk = { version = "5.2.0", features = ["wasip3-unstable"] }
+
+[workspace]
+exclude = ["auth-middleware"]

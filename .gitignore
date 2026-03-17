@@ -1,0 +1,16 @@
+# Rust build artifacts
+target/
+Cargo.lock
+
+# WASM compiled binaries
+*.wasm
+
+# WIT auto-downloaded dependencies
+**/wit/deps/
+**/wit/deps.lock
+
+# Spin runtime state
+.spin/
+
+# OS files
+.DS_Store

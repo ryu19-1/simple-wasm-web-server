@@ -1,0 +1,34 @@
+#:schema https://schemas.spinframework.dev/spin/manifest-v2/latest.json
+
+spin_manifest_version = 2
+
+[application]
+name = "hello-p3"
+version = "0.1.0"
+authors = ["Ryuki Kamikubo <ryuki.kamikubo@estie.co.jp>"]
+description = "WASIp3を試すWebアプリケーション"
+
+# auth-middleware: 公開エンドポイント（全リクエストを受ける）
+[[trigger.http]]
+route = "/..."
+component = "auth-middleware"
+
+# hello-p3: プライベートエンドポイント（Service Chaining経由のみ）
+[[trigger.http]]
+route = { private = true }
+component = "hello-p3"
+executor = { type = "wasip3-unstable" }
+
+[component.auth-middleware]
+source = "auth-middleware/target/wasm32-wasip2/release/auth_middleware.wasm"
+allowed_outbound_hosts = ["http://hello-p3.spin.internal"]
+[component.auth-middleware.build]
+command = "cargo build --target wasm32-wasip2 --release --manifest-path auth-middleware/Cargo.toml"
+watch = ["auth-middleware/src/**/*.rs", "auth-middleware/Cargo.toml"]
+
+[component.hello-p3]
+source = "target/wasm32-wasip2/release/hello_p3.wasm"
+allowed_outbound_hosts = []
+[component.hello-p3.build]
+command = "cargo build --target wasm32-wasip2 --release"
+watch = ["src/**/*.rs", "Cargo.toml"]

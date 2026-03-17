@@ -1,0 +1,17 @@
+[package]
+name = "auth-middleware"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wit-bindgen = "0.53.1"
+
+[profile.release]
+opt-level = "z" # サイズ最適化
+strip = true # デバッグ情報を除去
+lto = true # Link Time Optimization コンパイル単位を跨いだ最適化を有効にする
+# LLVMによる並列コンパイルを無効化（ビルド時間は伸びる一方で１つのUnitでコンパイルするためLLVMで最大限の最適化ができる
+codegen-units = 1
