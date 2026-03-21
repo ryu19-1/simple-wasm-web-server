@@ -1,3 +1,8 @@
+use exports::wasi::http::incoming_handler::Guest;
+use wasi::http::types::{
+    Headers, IncomingRequest, OutgoingBody, OutgoingResponse, ResponseOutparam,
+};
+
 wit_bindgen::generate!({
     world: "server",
     path: "wit",
@@ -5,14 +10,10 @@ wit_bindgen::generate!({
 });
 
 struct MyServer;
-
 export!(MyServer);
 
-impl exports::wasi::http::incoming_handler::Guest for MyServer {
-    fn handle(
-        request: exports::wasi::http::incoming_handler::IncomingRequest,
-        response_out: exports::wasi::http::incoming_handler::ResponseOutparam,
-    ) {
+impl Guest for MyServer {
+    fn handle(request: IncomingRequest, response_out: ResponseOutparam) {
         let path = request.path_with_query().unwrap_or_else(|| "/".to_string());
 
         let body = format!(
@@ -20,12 +21,12 @@ impl exports::wasi::http::incoming_handler::Guest for MyServer {
             path
         );
 
-        let headers = wasi::http::types::Headers::new();
+        let headers = Headers::new();
         headers
             .set(&"content-type", &[b"text/plain; charset=utf-8".to_vec()])
             .unwrap();
 
-        let response = wasi::http::types::OutgoingResponse::new(headers);
+        let response = OutgoingResponse::new(headers);
         response.set_status_code(200).unwrap();
 
         let out_body = response.body().unwrap();
@@ -35,7 +36,7 @@ impl exports::wasi::http::incoming_handler::Guest for MyServer {
             .unwrap();
         drop(out_stream);
 
-        wasi::http::types::OutgoingBody::finish(out_body, None).unwrap();
-        wasi::http::types::ResponseOutparam::set(response_out, Ok(response));
+        OutgoingBody::finish(out_body, None).unwrap();
+        ResponseOutparam::set(response_out, Ok(response));
     }
 }
